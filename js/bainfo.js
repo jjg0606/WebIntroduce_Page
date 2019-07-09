@@ -18,5 +18,6 @@ var bainfo =
             "code":"./code/ba/src_2",
             "desc":"유닛들의 충돌을 판단하는 함수입니다. 1번으로 min, max 테스트를 하고, 그 다음 포함테스트를 합니다."
         }
-    ]
+    ],
+    "video":"./video/BlindAssassinPlay.mp4"
 };

@@ -38,12 +38,5 @@ var app = new Vue({
             this.modscr.desc = desc;
             
         }
-    },
-    // mounted() {
-    //     axios
-    //         .get("./json/info.json")
-    //         .then(response => {
-    //             this.games = response.data;
-    //         })
-    // },
+    }
 })

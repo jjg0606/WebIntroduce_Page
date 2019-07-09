@@ -21,5 +21,6 @@ var plinfo =
             "code":"./code/pl/src_2",
             "desc":"플레이어 캐릭터의 체력을 표시하는 UI의 스크립트입니다. fill amount를 조절할 이미지 배열을 멤버로 가지고있고, Awake에서 델리게이트 함수에 이 클래스의 함수를 등록해서, 관찰자 패턴으로 구현했습니다."
         }
-    ]
+    ],
+    "video":"./video/RichiKunPlay.mp4"
 };
