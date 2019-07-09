@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>포트폴리오-정종근</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--include bootstrap and vuejs-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- color script -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://assets.colorscripter.com/libs/3/colorscripter.css">
+    <link rel="stylesheet" type="text/css" href="https://assets.colorscripter.com/libs/3/coloreditor.css">
+</head>
+
+<body>
+    <div id="app">
+        <!--Header-->
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4" @click="goIndex()">포트폴리오 페이지</h1>
+            <p class="lead mt-4">제가 만든 게임 포트폴리오들을 소개하는 페이지 입니다.</p>
+            <p class="lead"><a href="https://github.com/jjg0606/game_portfolio">깃허브 바로가기</a> <button type="button" class="btn btn-primary mx-4" v-show="page=='game'" @click="goIndex()">메인화면</button> </p>
+        </div>
+
+        <!-- Body(index)-->
+        <div class="container" v-show="page=='index'">
+            <div class="card-deck mb-3 text-center row">
+                <div class="col-md-6" v-for="game in games">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="my-0 font-weight-normal">{{game.name}}</h2>
+                        </div>
+                        <div class="card-body">
+                            <img class="img-fluid" :src="game.title_img" data-toggle="modal" data-target="#ModalCenter" @click="modalset(game.title_img)">
+                            <ul class="list-unstyled mt-3 mb-4" v-html="game.desc"></ul>
+                            <button type="button" class="btn btn-lg btn-block btn-outline-primary" @click="goTogame(game.info)">자세히 보기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Body(detail) -->
+        <div class="container" v-show="page=='game'">
+                <div class="row">
+
+                <div class="col-md-4" v-for="des in detail.descs">
+                    <div class="card mb-4 shadow-sm">
+                            <img class="img-fluid" :src="des.img" data-toggle="modal" data-target="#ModalCenter" @click="modalset(des.img)">
+                        <div class="card-body">                        
+                            <p class="card-text" v-text="des.desc"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4" v-show="detail.scrinfos!=undefined">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">소스코드 설명 <a v-show="detail.link != ''" :href="detail.link">(깃허브)</a></h4>
+                        </div>
+                        <div class="card-body row">
+                            <button class="btn btn-secondary col-md-12 my-1"  v-for="scr in detail.scrinfos" data-toggle="modal" data-target="#ModalScript" @click="srcmodalset(scr.code,scr.desc)">{{scr.short}}</button>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>            
+        </div>
+
+
+        <!--modal (img)-->
+        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true" >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" style="text-align: center">
+                        <img class="img-fluid" :src="modalsrc" >
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- modal (script) -->
+        <div class="modal fade" id="ModalScript" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content" style="width: 160%;left: -20%">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">스크립트 설명</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <pre class="modal-body ce-code-text" v-html="modscr.code">
+                    
+                </pre>
+                <div class="modal-body" v-text="modscr.desc">
+                    
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- footer -->
+          <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+              <div class="col-12 col-md">
+                <img class="mb-2" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
+             
+                <small class="d-block mb-3 text-muted">© 2017-2018</small>
+                <p>이 포트폴리오 페이지는 bootstrap, vue.js, colorscript 를 이용했습니다.</p>
+              </div>              
+            </div>
+          </footer>
+    </div>
+
+
+
+    <script src="./js/bainfo.js"></script>
+    <script src="./js/info.js"></script>
+    <script src="./js/plinfo.js"></script>
+    <script src="./js/tainfo.js"></script>
+    <script src="./js/vqinfo.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
